@@ -10,7 +10,6 @@ import {
 import type { Response } from 'express';
 import { GamesService } from './games.service';
 import { Game } from './entidades/games';
-import { CreateGameDto } from './dtos/create-game.dto';
 import { postMessageToThread } from 'worker_threads';
 
 
@@ -43,9 +42,10 @@ class GamesController {
     }
 
     @Post('/search')
-    findByName(): Game[] {
-        return this.gamesService.findByName();
-        // Função de buscar jogos por nome (barra de pesquisa no site);
+    findByName(@Param('searchTerm') searchTerm: string, @Res() res: Response): Game[] {
+        return this.gamesService.findByName(searchTerm);
+
+        return res.status(204).send();
     }
 }
 
